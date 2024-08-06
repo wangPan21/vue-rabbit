@@ -36,7 +36,6 @@ const getCategory = async () => {
   let result = await reqGetCategoryApi()
   if (result.code == 1) {
     categoryList.value = result.result;
-    console.log(categoryList.value);
   }
 }
 
