@@ -4,7 +4,10 @@
             <RouterLink class="logo" to="/" />
             <!-- 导航区域 -->
             <ul class="app-header-nav ">
-                <li class="home" v-for="i in categoryList" :key="i.id">
+                <li class="home">
+                    <RouterLink to="/">首页</RouterLink>
+                </li>
+                <li class="home" v-for="i in categoryStore.categoryList" :key="i.id">
                     <RouterLink to="/">{{ i.name }}</RouterLink>
                 </li>
             </ul>
@@ -19,26 +22,13 @@
 
 <script setup>
 import { useScroll } from '@vueuse/core';
-import { onMounted, ref } from "vue";
-import { reqGetCategoryApi } from "@/api/layout";
+import { useCategoryStore } from "@/stores/category";
 
 //获取垂直方向的滚动距离
 const { y } = useScroll(window)
-//初始化分类列表
-const categoryList = ref([]);
 
-//组件挂载时发送api请求
-onMounted(() => {
-    //发送网络请求
-    getCategory()
-})
+const categoryStore =  useCategoryStore()
 
-const getCategory = async () => {
-    let result = await reqGetCategoryApi()
-    if (result.code == 1) {
-        categoryList.value = result.result;
-    }
-}
 </script>
 
 <style lang="scss" scoped>

@@ -5,7 +5,7 @@
         <RouterLink to="/">小兔鲜</RouterLink>
       </h1>
       <ul class="app-header-nav">
-        <li class="home" v-for="i in categoryList" :key="i.id">
+        <li class="home" v-for="i in categoryStore.categoryList" :key="i.id">
           <RouterLink to="/">{{ i.name }}</RouterLink>
         </li>
       </ul>
@@ -20,24 +20,9 @@
 </template>
 
 <script setup>
-import { onMounted,ref } from "vue";
-import { reqGetCategoryApi } from "@/api/layout";
+import { useCategoryStore } from "@/stores/category"
 
-//初始化分类列表
-const categoryList = ref([]);
-
-//组件挂载时发送api请求
-onMounted(() => {
-  //发送网络请求
-  getCategory()
-})
-
-const getCategory = async () => {
-  let result = await reqGetCategoryApi()
-  if (result.code == 1) {
-    categoryList.value = result.result;
-  }
-}
+const categoryStore =  useCategoryStore()
 
 </script>
 
