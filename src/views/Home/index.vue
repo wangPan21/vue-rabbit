@@ -1,5 +1,5 @@
 <template>
-<div class="container">
+  <div class="container">
     <HomeCategory />
     <HomeBanner />
   </div>
@@ -16,6 +16,4 @@ import HomeHot from './components/HomeHot.vue'
 import HomeProduct from './components/HomeProduct.vue'
 </script>
 
-<style lang="scss" scoped>
-
-</style>
+<style lang="scss" scoped></style>
