@@ -12,14 +12,14 @@
                 </el-breadcrumb>
             </div>
             <div class="sub-container">
-                <el-tabs>
+                <el-tabs v-model="reqData.sortField" @tab-change="handleClick">
                     <el-tab-pane label="最新商品" name="publishTime"></el-tab-pane>
                     <el-tab-pane label="最高人气" name="orderNum"></el-tab-pane>
                     <el-tab-pane label="评论最多" name="evaluateNum"></el-tab-pane>
                 </el-tabs>
-                <div class="body">
+                <div class="body" v-infinite-scroll="load" :infinite-scroll-disabled="disabled">
                     <!-- 商品列表-->
-                    <GoodsItem v-for="item in goodList.items" :good="item" :key="item.id"></GoodsItem>
+                    <GoodsItem v-for="item in goodList" :good="item" :key="item.id"></GoodsItem>
                 </div>
             </div>
         </div>
@@ -32,6 +32,7 @@ import { reqGetSubCategoryApi, reqGetSubCategoryListApi } from "@/api/category";
 import { useRoute } from "vue-router";
 import GoodsItem from '@/views/Home/components/GoodsItem.vue'
 
+const disabled = ref(false)
 
 //初始化路由参数
 const route = useRoute()
@@ -40,7 +41,7 @@ const route = useRoute()
 const subCategoryList = ref({})
 
 //初始化基础列表数据
-const goodList = ref([])
+let goodList = ref([])
 
 //初始化基础列表请求数据
 const reqData = ref({
@@ -68,11 +69,29 @@ const getSubCategory = async () => {
 const getSubCategoryList = async () => {
     const res = await reqGetSubCategoryListApi(reqData.value)
     if (res.code == '1') {
-        goodList.value = res.result
+        goodList.value = res.result.items
     }
 }
 
+//点击切换tabs事件回调
+const handleClick = () => {
+    reqData.value.page = 1
+    getSubCategoryList()
+}
 
+//加载更多
+const load = async () => {
+    //获取下一页数据
+    reqData.value.page++
+    const res = await reqGetSubCategoryListApi(reqData.value)
+    //新老数组拼接
+    goodList.value = [...goodList.value, ...res.result.items]
+    //加载完毕，停止监听
+    if (res.result.items.length === 0) {
+        disabled.value = true
+    }
+
+}
 
 </script>
 
