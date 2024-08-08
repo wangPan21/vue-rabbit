@@ -11,3 +11,7 @@ export const reqGetNewListApi = () =>
 //获取人气推荐的数据
 export const reqGetHotListApi = () =>
     request({url:'/home/hot',method:'get'})
+
+//获取产品列表的数据
+export const reqGetGoodsListApi = () =>
+    request({url:'/home/goods',method:'get'})
