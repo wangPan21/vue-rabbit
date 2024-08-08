@@ -8,7 +8,7 @@
                     <RouterLink to="/">首页</RouterLink>
                 </li>
                 <li class="home" v-for="i in categoryStore.categoryList" :key="i.id">
-                    <RouterLink :to="`/category/${i.id}`">{{ i.name }}</RouterLink>
+                    <RouterLink active-class="active" :to="`/category/${i.id}`">{{ i.name }}</RouterLink>
                 </li>
             </ul>
 
@@ -82,6 +82,10 @@ const categoryStore =  useCategoryStore()
                 color: $xtxColor;
             }
         }
+        .active {
+        color: $xtxColor;
+        border-bottom: 1px solid $xtxColor;
+      }
     }
 }
 

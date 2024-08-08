@@ -1,5 +1,5 @@
 <template>
-<div class="home-banner">
+  <div class="home-banner">
     <el-carousel height="500px">
       <el-carousel-item v-for="item in bannerList" :key="item">
         <img :src="item.imgUrl" alt="">
@@ -9,23 +9,23 @@
 </template>
 
 <script setup>
-import { ref,onMounted } from "vue";
+import { ref, onMounted } from "vue";
 import { reqGetBannerListApi } from "@/api/home";
 
 //初始化轮播图数据
 let bannerList = ref([])
 
 //组件挂载时，发送网络请求
-onMounted(()=>{
-    getBannerList()
+onMounted(() => {
+  getBannerList()
 })
 
 //获取轮播图数据的回调
-const getBannerList = async ()=>{
-    let res = await reqGetBannerListApi()
-    if (res.code == "1") {
-        bannerList.value = res.result
-    }
+const getBannerList = async () => {
+  let res = await reqGetBannerListApi()
+  if (res.code == "1") {
+    bannerList.value = res.result
+  }
 }
 
 </script>
@@ -44,5 +44,4 @@ const getBannerList = async ()=>{
     height: 500px;
   }
 }
-
 </style>
