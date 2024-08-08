@@ -7,22 +7,26 @@ const router = createRouter({
   // path和compoent对应关系的位置
   routes: [
     {
-      path:'/',
-      component:()=>import('@/views/Layout/index.vue'),
+      path: '/',
+      component: () => import('@/views/Layout/index.vue'),
       children: [
         {
-          path:'',
-          component:()=>import('@/views/Home/index.vue'),
+          path: '',
+          component: () => import('@/views/Home/index.vue'),
         },
         {
-          path:'category/:id',
-          component:()=>import('@/views/Category/index.vue')
+          path: 'category/:id',
+          component: () => import('@/views/Category/index.vue'),
         },
+        {
+          path: 'category/sub/:id',
+          component: () => import('@/views/SubCategory/index.vue')
+        }
       ]
     },
     {
-      path:'/login',
-      component:()=>import('@/views/Login/index.vue')
+      path: '/login',
+      component: () => import('@/views/Login/index.vue')
     },
   ],
 
