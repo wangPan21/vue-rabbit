@@ -27,9 +27,12 @@ const router = createRouter({
   ],
 
   //路由跳转始终保持top为0
-  scrollBehavior() {
-    // 始终滚动到顶部
-    return { top: 0 }
+  scrollBehavior(to, from, savedPosition) {
+    //只有在根页面下top为0，其他页面保持原来的位置
+    if (to.path === '/') {
+      return { top: 0 }
+    }
+    return savedPosition;
   },
 })
 

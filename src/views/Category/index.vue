@@ -41,49 +41,13 @@
 </template>
 
 <script setup>
-import { ref, onMounted, onUpdated } from "vue";
-import { reqGetCategoryApi } from "@/api/category.js";
-import { useRoute } from "vue-router";
-import { reqGetBannerListApi } from "@/api/home";
 import GoodsItem from '@/views/Home/components/GoodsItem.vue'
+import { useBanner } from "./composables/useBanner";
+import { useCategory } from "./composables/useCategory";
 
-//初始化路由参数
-const route = useRoute()
-//初始化分类数据
-let categoryList = ref({})
-//初始化轮播图数据
-let bannerList = ref([])
+let { bannerList } = useBanner()
+let { categoryList } = useCategory()
 
-//组建挂载时
-onMounted(() => {
-    // 获取一级分类的数据
-    getCategoryList()
-    //获取轮播图数据
-    getBannerList()
-})
-
-//响应式状态发生变化，更新Dom
-onUpdated(() => {
-    // 获取一级分类的数据
-    getCategoryList()
-
-})
-
-//获取一级分类的数据
-const getCategoryList = async () => {
-    let res = await reqGetCategoryApi(route.params.id)
-    if (res.code == "1") {
-        categoryList.value = res.result;
-    }
-}
-
-//获取轮播图数据的回调
-const getBannerList = async () => {
-    let res = await reqGetBannerListApi({ distributionSite: '2' })
-    if (res.code == "1") {
-        bannerList.value = res.result
-    }
-}
 </script>
 
 <style lang="scss" scoped>
