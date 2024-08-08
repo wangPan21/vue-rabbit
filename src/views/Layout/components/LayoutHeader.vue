@@ -6,7 +6,7 @@
       </h1>
       <ul class="app-header-nav">
         <li class="home" v-for="i in categoryStore.categoryList" :key="i.id">
-          <RouterLink to="/">{{ i.name }}</RouterLink>
+          <RouterLink :to="`/category/${i.id}`">{{ i.name }}</RouterLink>
         </li>
       </ul>
       <div class="search">

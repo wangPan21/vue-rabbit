@@ -1,10 +1,6 @@
 //createRouter:创建router实例对象
 //createWebHistory:创建history路由模式
 import { createRouter, createWebHistory } from 'vue-router'
-import Login from '@/views/Login/index.vue';
-import Layout from '@/views/Layout/index.vue';
-import Home from '@/views/Home/index.vue';
-import Category from '@/views/Category/index.vue';
 
 const router = createRouter({
   history: createWebHistory(import.meta.env.BASE_URL),
@@ -12,23 +8,29 @@ const router = createRouter({
   routes: [
     {
       path:'/',
-      component:Layout,
+      component:()=>import('@/views/Layout/index.vue'),
       children: [
         {
           path:'',
-          component:Home
+          component:()=>import('@/views/Home/index.vue'),
         },
         {
-          path:'category',
-          component:Category
+          path:'category/:id',
+          component:()=>import('@/views/Category/index.vue')
         },
       ]
     },
     {
       path:'/login',
-      component:Login
+      component:()=>import('@/views/Login/index.vue')
     },
-  ]
+  ],
+
+  //路由跳转始终保持top为0
+  scrollBehavior() {
+    // 始终滚动到顶部
+    return { top: 0 }
+  },
 })
 
 export default router

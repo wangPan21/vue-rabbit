@@ -8,7 +8,7 @@
                     <RouterLink to="/">首页</RouterLink>
                 </li>
                 <li class="home" v-for="i in categoryStore.categoryList" :key="i.id">
-                    <RouterLink to="/">{{ i.name }}</RouterLink>
+                    <RouterLink :to="`/category/${i.id}`">{{ i.name }}</RouterLink>
                 </li>
             </ul>
 
