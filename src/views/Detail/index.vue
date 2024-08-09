@@ -19,7 +19,7 @@
                     <div class="goods-info">
                         <div class="media">
                             <!-- 图片预览区 -->
-
+                            <ImageView :imageList="goodsList.mainPictures"></ImageView>
                             <!-- 统计数量 -->
                             <ul class="goods-sales">
                                 <li>
@@ -103,9 +103,9 @@
                         <!-- 24热榜+专题推荐 -->
                         <div class="goods-aside">
                             <!-- 24小时热榜 -->
-                            <DetailHot></DetailHot>
+                        <DetailHot :title="1"></DetailHot>
                             <!-- 周热榜 -->
-                            <DetailHot></DetailHot>
+                            <DetailHot :title="2"></DetailHot>
                         </div>
                     </div>
                 </div>
@@ -119,6 +119,7 @@ import { ref, onMounted } from "vue";
 import { reqGetDatailApi } from "@/api/detail";
 import { useRoute } from "vue-router";
 import DetailHot from './components/DetailHot.vue'
+import ImageView from '@/components/ImageView/index.vue'
 //初始化商品详情数据
 const goodsList = ref({})
 
