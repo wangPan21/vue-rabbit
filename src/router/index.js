@@ -21,6 +21,10 @@ const router = createRouter({
         {
           path: 'category/sub/:id',
           component: () => import('@/views/SubCategory/index.vue')
+        },
+        {
+          path: 'detail/:id',
+          component: () => import('@/views/Detail/index.vue')
         }
       ]
     },
@@ -31,12 +35,12 @@ const router = createRouter({
   ],
 
   //路由跳转始终保持top为0
-  scrollBehavior(to, from, savedPosition) {
+  scrollBehavior() {
     //只有在根页面下top为0，其他页面保持原来的位置
-    if (to.path === '/') {
+    // if (to.path === '/') {
       return { top: 0 }
-    }
-    return savedPosition;
+    // }
+    // return savedPosition;
   },
 })
 
