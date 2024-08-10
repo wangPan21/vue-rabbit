@@ -34,12 +34,12 @@
                                 </li>
                                 <li>
                                     <p>收藏人气</p>
-                                    <p>{{ goodsList.collectCount}}+</p>
+                                    <p>{{ goodsList.collectCount }}+</p>
                                     <p><i class="iconfont icon-favorite-filling"></i>收藏商品</p>
                                 </li>
                                 <li>
                                     <p>品牌信息</p>
-                                    <p>{{ goodsList.brand?.name}}</p>
+                                    <p>{{ goodsList.brand?.name }}</p>
                                     <p><i class="iconfont icon-dynamic-filling"></i>品牌主页</p>
                                 </li>
                             </ul>
@@ -70,10 +70,10 @@
                             <!-- sku组件 -->
                             <XtxSku :goods="goodsList" @change="skuChange"></XtxSku>
                             <!-- 数据组件 -->
-
+                            <el-input-number v-model="count" @change="handleChange" />
                             <!-- 按钮组件 -->
                             <div>
-                                <el-button size="large" class="btn">
+                                <el-button size="large" class="btn" @click="addCart">
                                     加入购物车
                                 </el-button>
                             </div>
@@ -96,14 +96,14 @@
                                         </li>
                                     </ul>
                                     <!-- 图片 -->
-                                     <img v-for="i in goodsList.details?.pictures" :key="i.id" v-img-lazy="i" alt="">
+                                    <img v-for="i in goodsList.details?.pictures" :key="i.id" v-img-lazy="i" alt="">
                                 </div>
                             </div>
                         </div>
                         <!-- 24热榜+专题推荐 -->
                         <div class="goods-aside">
                             <!-- 24小时热榜 -->
-                        <DetailHot :title="1"></DetailHot>
+                            <DetailHot :title="1"></DetailHot>
                             <!-- 周热榜 -->
                             <DetailHot :title="2"></DetailHot>
                         </div>
@@ -119,11 +119,19 @@ import { ref, onMounted } from "vue";
 import { reqGetDatailApi } from "@/api/detail";
 import { useRoute } from "vue-router";
 import DetailHot from './components/DetailHot.vue'
+import { ElMessage } from "element-plus";
+import { useCartStore } from "@/stores/cartStore";
 
 //初始化商品详情数据
 const goodsList = ref({})
 
 const route = useRoute()
+
+const cartStore = useCartStore()
+
+let count = ref(1)
+
+let skuObj = {}
 
 //组建挂载时调用
 onMounted(() => {
@@ -139,9 +147,40 @@ const getDetail = async () => {
 }
 
 //sku规格被操作时
-const skuChange = (sku) =>{
-    console.log(sku);
-    
+const skuChange = (sku) => {
+    skuObj = sku
+    console.log(skuObj.value);
+
+}
+
+//count数量被操作时
+const handleChange = (count) => {
+    console.log(count);
+
+}
+
+//添加购物车
+const addCart = () => {
+    //判断skuObj是否选择完整
+    if (skuObj.skuId) {
+        //已选择
+        cartStore.addCart({
+            id:goodsList.value.id,//商品Id
+            name:goodsList.value.name,//商品名称
+            picture:goodsList.value.mainPictures[0],//商品图片
+            price:goodsList.value.price,//商品价格
+            count:count.value,//商品数量
+            skuId:skuObj.skuId,//skuId
+            attrsText:skuObj.specsText,//商品规格文本
+            selected:true//商品是否选中
+        })
+    }else{
+        //未选择
+        ElMessage({
+            type:'warning',
+            message:'请选择规格'
+        })
+    }
 }
 
 </script>
