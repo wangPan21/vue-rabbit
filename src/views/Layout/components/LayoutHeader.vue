@@ -14,15 +14,16 @@
         <input type="text" placeholder="搜一搜">
       </div>
       <!-- 头部购物车 -->
-
+      <LayoutCart></LayoutCart>
     </div>
   </header>
 </template>
 
 <script setup>
 import { useCategoryStore } from "@/stores/category"
+import LayoutCart from "./LayoutCart.vue";
 
-const categoryStore =  useCategoryStore()
+const categoryStore = useCategoryStore()
 
 </script>
 
