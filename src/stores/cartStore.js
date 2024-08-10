@@ -7,6 +7,7 @@ export const useCartStore = defineStore('cart', () => {
     //定义state cartList
     const cartList = ref([])
     //定义action addCart
+    //添加购物车
     const addCart = (goods) => {
         //添加购物车操作 已添加过count+1 没有添加过 push
         const item = cartList.value.find((item) => goods.skuId === item.skuId)
@@ -18,8 +19,14 @@ export const useCartStore = defineStore('cart', () => {
             cartList.value.push(goods)
         }
     }
+
+    //删除购物车
+    const delCart = (skuId) =>{
+        const index = cartList.value.findIndex((item)=> skuId === item.skuId)
+        cartList.value.splice(index,1)
+    }
     return {
-        cartList, addCart
+        cartList, addCart,delCart
     }
 
 },{
