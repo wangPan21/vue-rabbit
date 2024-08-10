@@ -10,6 +10,7 @@ import { lazyPlugin } from "@/directives/index";
 import App from './App.vue'
 import router from './router'
 
+import { componentPligin } from "@/components";
 const app = createApp(App)
 
 app.use(createPinia())
@@ -21,3 +22,4 @@ app.use(lazyPlugin)
 
 app.mount('#app')
 
+app.use(componentPligin)

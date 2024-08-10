@@ -19,7 +19,7 @@
                     <div class="goods-info">
                         <div class="media">
                             <!-- 图片预览区 -->
-                            <ImageView :imageList="goodsList.mainPictures"></ImageView>
+                            <XtxImageView :imageList="goodsList.mainPictures"></XtxImageView>
                             <!-- 统计数量 -->
                             <ul class="goods-sales">
                                 <li>
@@ -68,7 +68,7 @@
                                 </dl>
                             </div>
                             <!-- sku组件 -->
-
+                            <XtxSku :goods="goodsList" @change="skuChange"></XtxSku>
                             <!-- 数据组件 -->
 
                             <!-- 按钮组件 -->
@@ -119,7 +119,7 @@ import { ref, onMounted } from "vue";
 import { reqGetDatailApi } from "@/api/detail";
 import { useRoute } from "vue-router";
 import DetailHot from './components/DetailHot.vue'
-import ImageView from '@/components/ImageView/index.vue'
+
 //初始化商品详情数据
 const goodsList = ref({})
 
@@ -136,6 +136,12 @@ const getDetail = async () => {
     if (res.code == '1') {
         goodsList.value = res.result
     }
+}
+
+//sku规格被操作时
+const skuChange = (sku) =>{
+    console.log(sku);
+    
 }
 
 </script>

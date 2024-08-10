@@ -47,25 +47,51 @@ const changeImage = (i) => {
     changeIndex.value = i
 }
 
+watch([elementX, elementY, isOutside], () => {  
+    if (isOutside.value) return;  
+  
+    // 定义adjustPosition辅助函数来调整位置值  
+    // 参数说明：  
+    // - value: 当前鼠标位置或相关值  
+    // - min: 位置的最小值  
+    // - max: 位置的最大值  
+    // - offset: 需要从当前值中减去的偏移量  
+    const adjustPosition = (value, min, max, offset) => {  
+        // 使用Math.max确保值不小于最小值  
+        // 使用Math.min确保值不大于最大值  
+        // 最后从调整后的值中减去偏移量  
+        return Math.min(Math.max(value - offset, min), max);  
+    };  
+   // 使用adjustPosition函数来调整left值  
+    // 这里假设left的最小值为0，最大值为200，偏移量为100
+    left.value = adjustPosition(elementX.value, 0, 200, 100); 
+    // 使用adjustPosition函数来调整top值  
+    // 同理，top的最小值为0，最大值为200，偏移量为100   
+    top.value = adjustPosition(elementY.value, 0, 200, 100);  
+  
+    positionX.value = -left.value * 2;  
+    positionY.value = -top.value * 2;  
+});
+
 // 监听并跟随鼠标
-watch([elementX, elementY, isOutside], () => {
-    //如果鼠标没有在盒子里，则不需要执行后面的逻辑
-    if (isOutside.value) return
-    // 横向
-    if (elementX.value > 100 && elementX.value < 300) { left.value = elementX.value - 100 }
-    //纵向
-    if (elementY.value > 100 && elementY.value < 300) { top.value = elementY.value - 100 }
-    //处理边界
-    if (elementX.value > 300) { left.value = 200 }
-    if (elementX.value < 200) { left.value = 0 }
+// watch([elementX, elementY, isOutside], () => {
+//     //如果鼠标没有在盒子里，则不需要执行后面的逻辑
+//     if (isOutside.value) return
+//     // 横向
+//     if (elementX.value > 100 && elementX.value < 300) { left.value = elementX.value - 100 }
+//     //纵向
+//     if (elementY.value > 100 && elementY.value < 300) { top.value = elementY.value - 100 }
+//     //处理边界
+//     if (elementX.value > 300) { left.value = 200 }
+//     if (elementX.value < 200) { left.value = 0 }
 
-    if (elementY.value > 300) { top.value = 200 }
-    if (elementY.value < 200) { top.value = 0 }
+//     if (elementY.value > 300) { top.value = 200 }
+//     if (elementY.value < 200) { top.value = 0 }
 
-    //控制大图的显示
-    positionX.value = -left.value * 2
-    positionY.value = -top.value * 2
-})
+//     //控制大图的显示
+//     positionX.value = -left.value * 2
+//     positionY.value = -top.value * 2
+// })
 
 </script>
 
