@@ -19,12 +19,13 @@
                 </nav>
                 <div class="account-box">
                     <div class="form">
-                        <el-form label-position="right" label-width="60px" ref="from" :rules="rules" status-icon :model="userData">
-                            <el-form-item label="账户" prop="username">
-                                <el-input v-model="userData.username" />
+                        <el-form label-position="right" label-width="60px" ref="from" :rules="rules" status-icon
+                            :model="userData">
+                            <el-form-item label="账户" prop="account">
+                                <el-input v-model="userData.account" />
                             </el-form-item>
                             <el-form-item label="密码" prop="password">
-                                <el-input v-model="userData.password" type="password"/>
+                                <el-input v-model="userData.password" type="password" />
                             </el-form-item>
                             <el-form-item label-width="22px" prop="agree">
                                 <el-checkbox size="large" v-model="userData.agree">
@@ -56,48 +57,65 @@
 </template>
 
 <script setup>
-import { ref,reactive } from "vue";
+import { ref, reactive } from "vue";
+import 'element-plus/es/components/message/style/css'
+import { ElMessage } from 'element-plus'
+import { useRouter } from "vue-router";
+import { useUserStore } from "@/stores/user";
 
 //初始化from表单实力
 let from = ref()
 
+//初始化仓库实例
+const userStore = useUserStore()
+
+//初始化路由
+const router = useRouter()
+
 //收集用户数据
 const userData = reactive({
-    username: '',
-    password: '',
-    agree:false
+    account: '12056258282',
+    password: 'hm#qd@23!',
+    agree: false
 })
 
 //登陆按钮的回调
-const submitForm = async () =>{
+const submitForm = async () => {
     await from.value.validate()
+    const { account, password } = userData
+    await userStore.getUserInfo({account, password})
+        ElMessage({
+            type: 'success',
+            message: '登录成功'
+        })
+        router.replace({ path: '/' })
 }
 
 //自定义用户表单校验规则
-const validateUsername = (rule, value, callback) => {
-    if (value === '') {callback(new Error('用户名不能为空'))} 
-    if (value.length < 2) {callback(new Error('用户名至少为2个字符串'))} 
+const validateaccount = (rule, value, callback) => {
+    if (value === '') { callback(new Error('用户名不能为空')) }
+    if (value.length < 2) { callback(new Error('用户名至少为2个字符串')) }
     callback()
 }
 
 //自定义密码校验规则
 const validatePassword = (rule, value, callback) => {
-    if (value === '') {callback(new Error('密码不能为空'))} 
-    if (value.length < 6 || value.length>14) {callback(new Error('密码应是6～14个字符'))} 
+    if (value === '') { callback(new Error('密码不能为空')) }
+    if (value.length < 6 || value.length > 14) { callback(new Error('密码应是6～14个字符')) }
     callback()
 }
 
 //自定义用户协议校验规则
 const validateAgree = (rule, value, callback) => {
-    if (value) {callback()} 
+    if (value) { callback() }
     callback(new Error('请勾选用户协议'))
 }
 
 //表单校验规则
 const rules = reactive({
-    username: [{required: true, validator: validateUsername, trigger: 'blur' }],
-    password: [{required: true, validator: validatePassword, trigger: 'blur' }],
-    agree: [{required: true, validator: validateAgree, trigger: 'change' }],
+    account: [{ required: true, validator: validateaccount, trigger: 'blur' }],
+    password: [{ required: true, validator: validatePassword, trigger: 'blur' }],
+    agree: [{ required: true, validator: validateAgree, trigger: 'change' }],
 })
 
 
