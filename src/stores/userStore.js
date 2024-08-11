@@ -14,6 +14,8 @@ export const useUserStore = defineStore('user', () => {
         const res = await reqGetLoginApi(account, password)
         if (res.code == '1') {
             userInfo.value = res.result;
+            // 合并购物车的操作
+            cartStore.mergeCart()
             //获取最新购物车数据
             cartStore.upDataCart()
         }

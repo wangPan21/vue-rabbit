@@ -3,7 +3,7 @@
 import { defineStore } from "pinia";
 import { ref, computed } from "vue";
 import { useUserStore } from "./userStore";
-import { reqAddCartApi, reqGetCartApi, reqDelCartApi } from "@/api/cart";
+import { reqAddCartApi, reqGetCartApi, reqDelCartApi, reqMergeCartApi } from "@/api/cart";
 
 export const useCartStore = defineStore('cart', () => {
     const userStore = useUserStore()
@@ -62,6 +62,17 @@ export const useCartStore = defineStore('cart', () => {
         cartList.value = []
     }
 
+    //合并购物车
+    const mergeCart = async () => {
+        await reqMergeCartApi(cartList.value.map((item) => {
+            return {
+                skuId: item.skuId,
+                selected: item.selected,
+                count: item.count
+            }
+        }))
+    }
+
     //单选功能
     const singleCheck = (skuId, selected) => {
         //通过skuId找到要修改的商品，再通过selected值修改商品的selected值
@@ -91,8 +102,8 @@ export const useCartStore = defineStore('cart', () => {
     const selectedPrice = computed(() => cartList.value.filter((item) => item.selected).reduce((a, c) => a + c.count * c.price, 0))
 
     return {
-        cartList, addCart, delCart, allCount, allPrice, singleCheck,
-        isAll, allCheck, selectedCount, selectedPrice, clearCart, upDataCart
+        cartList, isAll, allCount, allPrice, selectedCount, selectedPrice,
+        addCart, delCart, allCheck, singleCheck, clearCart, upDataCart, mergeCart
     }
 
 }, {

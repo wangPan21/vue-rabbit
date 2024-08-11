@@ -12,3 +12,7 @@ export const reqGetCartApi = () =>
 //删除购物车接口
 export const reqDelCartApi = (ids) =>
     request({ url: '/member/cart', method: 'delete', data: { ids } })
+
+//合并购物车接口 
+export const reqMergeCartApi = (data) =>
+    request({ url: '/member/cart/merge', method: 'post', data })
