@@ -22,7 +22,7 @@
 
 <script setup>
 import { useScroll } from '@vueuse/core';
-import { useCategoryStore } from "@/stores/category";
+import { useCategoryStore } from "@/stores/categoryStore";
 
 //获取垂直方向的滚动距离
 const { y } = useScroll(window)

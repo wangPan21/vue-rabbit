@@ -20,7 +20,7 @@
 </template>
 
 <script setup>
-import { useCategoryStore } from "@/stores/category"
+import { useCategoryStore } from "@/stores/categoryStore"
 import LayoutCart from "./LayoutCart.vue";
 
 const categoryStore = useCategoryStore()

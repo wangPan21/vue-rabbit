@@ -70,7 +70,7 @@
                             <!-- sku组件 -->
                             <XtxSku :goods="goodsList" @change="skuChange"></XtxSku>
                             <!-- 数据组件 -->
-                            <el-input-number v-model="count" @change="handleChange" />
+                            <el-input-number :min="1" v-model="count" @change="handleChange" />
                             <!-- 按钮组件 -->
                             <div>
                                 <el-button size="large" class="btn" @click="addCart">
