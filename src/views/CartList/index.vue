@@ -7,7 +7,7 @@
           <thead>
             <tr>
               <th width="120">
-                <el-checkbox />
+                <el-checkbox :model-value="cartStore.isAll" @change="allCheck"/>
               </th>
               <th width="400">商品信息</th>
               <th width="220">单价</th>
@@ -20,7 +20,8 @@
           <tbody>
             <tr v-for="i in cartStore.cartList" :key="i.id">
               <td>
-                <el-checkbox />
+                <!-- 单选框 -->
+                <el-checkbox :model-value="i.selected" @change="(selected)=>singleCheck(i,selected)"/>
               </td>
               <td>
                 <div class="goods">
@@ -83,6 +84,16 @@
 import { useCartStore } from "@/stores/cartStore";
 
 const cartStore = useCartStore()
+
+//单选回调
+const singleCheck = (i,selected) =>{
+    cartStore.singleCheck(i.skuId,selected)
+}
+
+//全选回调
+const allCheck = (selected) =>{
+    cartStore.allCheck(selected)
+}
 
 </script>
 
