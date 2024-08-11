@@ -30,12 +30,16 @@ const router = createRouter({
           path: 'cartList',
           component: () => import('@/views/CartList/index.vue')
         },
+        {
+          path: 'checkout',
+          component: () => import('@/views/Checkout/index.vue')
+        },
       ]
     },
     {
       path: '/login',
       component: () => import('@/views/Login/index.vue')
-    },
+    }
   ],
 
   //路由跳转始终保持top为0
