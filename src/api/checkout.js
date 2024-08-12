@@ -4,4 +4,6 @@ import request from "@/utils/request";
 export const reqGetOrderApi = () =>
     request({ url: '/member/order/pre', method: 'get' })
 
-//修改收货地址
+//创建订单接口 
+export const reqFoundOrderApi = (data) =>
+    request({ url: '/member/order', method: 'post', data })

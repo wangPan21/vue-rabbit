@@ -90,7 +90,7 @@
                 </div>
                 <!-- 提交订单 -->
                 <div class="submit">
-                    <el-button type="primary" size="large">提交订单</el-button>
+                    <el-button type="primary" size="large" @click="createdOrder">提交订单</el-button>
                 </div>
             </div>
         </div>
@@ -120,11 +120,20 @@
 <script setup>
 import { ref, onMounted } from "vue";
 import { reqGetOrderApi } from "@/api/checkout";
+import { reqFoundOrderApi } from "@/api/checkout";
+import { useRouter } from "vue-router";
+import { useCartStore } from "@/stores/cartStore";
 
 const checkInfo = ref({})  // 订单对象
 const curAddress = ref({})  // 地址对象
-const showDialog = ref(false)
-const activeAddress = ref({})
+const showDialog = ref(false) //控制对话框开关
+const activeAddress = ref({}) //修改地址对象
+
+//初始化路由
+const router = useRouter()
+
+//初始化仓库
+const cartStore =  useCartStore()
 
 onMounted(() => {
     getOrder()
@@ -154,6 +163,36 @@ const confirm = () => {
     showDialog.value = false
     activeAddress.value = {}
 
+}
+
+//创建订单
+const createdOrder = async () => {
+    const res = await reqFoundOrderApi({
+        deliveryTimeType: 1,
+        payType: 1,
+        payChannel: 1,
+        buyerMessage: "",
+        goods: checkInfo.value.goods.map(item => {
+            return {
+                skuId: item.skuId,
+                count: item.count
+            }
+        }
+        ),
+        addressId: curAddress.value.id
+    })
+    if (res.code == '1') {
+        const orderId = res.result.id
+        //创建成功后路由跳转
+        router.push({
+            path: '/pay',
+            query: {
+                id: orderId
+            }
+        })
+        //更新购物车
+        cartStore.upDataCart()
+    }
 }
 
 </script>
