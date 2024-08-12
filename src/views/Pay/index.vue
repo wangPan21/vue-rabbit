@@ -36,9 +36,14 @@
 
 <script setup>
 import { ref, onMounted } from "vue";
-
+import { reqOrderListApi } from "@/api/pay";
+import { useRoute } from "vue-router";
 //初始化订单数据
-const payInfo = {}
+const payInfo = ref({})
+//初始化倒计时时间
+// const times = ref('')
+//初始化路由 
+const route = useRoute()
 
 onMounted(() => {
     FoundOrder()
@@ -46,9 +51,19 @@ onMounted(() => {
 
 //发送创建订单请求函数
 const FoundOrder = async () => {
-
+    const res = await reqOrderListApi(route.query.id)
+    if (res.code == '1') {
+        payInfo.value = res.result
+    }
 }
 
+//跳转支付页
+//携带订单id以及回调地址跳转到支付地址（get）
+//支付地址
+const baseURL = 'http://pcapi-xiaotuxian-front-devtest.itheima.net/'
+const backURL = 'http://127.0.0.1:5173/paycallback'
+const redirectUrl = encodeURIComponent(backURL)
+const payUrl = `${baseURL}pay/aliPay?orderId=${route.query.id}&redirect=${redirectUrl}`
 </script>
 
 <style lang="scss" scoped>
