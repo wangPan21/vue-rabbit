@@ -74,7 +74,7 @@ const router = useRouter()
 
 //收集用户数据
 const userData = reactive({
-    account: '12056258282',
+    account: '12056258287',
     password: 'hm#qd@23!',
     agree: false
 })
