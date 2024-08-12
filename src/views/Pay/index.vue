@@ -6,7 +6,7 @@
                 <span class="icon iconfont icon-queren2"></span>
                 <div class="tip">
                     <p>订单提交成功！请尽快完成支付。</p>
-                    <p>支付还剩 <span>24分30秒</span>, 超时后将取消订单</p>
+                    <p>支付还剩 <span>{{ formatTime }}</span>, 超时后将取消订单</p>
                 </div>
                 <div class="amount">
                     <span>应付总额：</span>
@@ -38,10 +38,12 @@
 import { ref, onMounted } from "vue";
 import { reqOrderListApi } from "@/api/pay";
 import { useRoute } from "vue-router";
+import { useCountDown } from "@/composables/useCountDown";
+
+//初始化倒计时
+const { formatTime, start } = useCountDown()
 //初始化订单数据
 const payInfo = ref({})
-//初始化倒计时时间
-// const times = ref('')
 //初始化路由 
 const route = useRoute()
 
@@ -54,6 +56,8 @@ const FoundOrder = async () => {
     const res = await reqOrderListApi(route.query.id)
     if (res.code == '1') {
         payInfo.value = res.result
+        //初始化倒计时时间
+        start(res.result.countdown)
     }
 }
 
