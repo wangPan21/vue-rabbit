@@ -1,8 +1,8 @@
 <template>
     <div class="order-container">
-        <el-tabs>
+        <el-tabs @tab-change="handleClick">
             <!-- tab切换 -->
-            <el-tab-pane v-for="item in tabTypes" :key="item.name" :label="item.label" />
+            <el-tab-pane v-for="item in tabTypes" :key="item.name" :label="item.label"/>
 
             <div class="main-container">
                 <div class="holder-container" v-if="orderList.length === 0">
@@ -119,6 +119,13 @@ const getOrder = async () => {
     if (res.code == '1') {
         orderList.value = res.result
     }
+}
+
+const handleClick = (type) => {
+    //切换订单状态
+    params.value.orderState = type
+    //获取新的订单数据
+    getOrder()
 }
 
 </script>
