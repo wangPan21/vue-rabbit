@@ -6,4 +6,9 @@ export const reqGetLoginApi = (account, password) =>
 
 //获取猜你喜欢接口
 export const getLikeListAPI = ({ limit = 4 }) =>
-    request({ url: '/goods/relevant', params: { limit } })
+    request({ url: '/goods/relevant', method: 'get', params: { limit } })
+
+//我的订单接口
+export const getUserOrder = (params) =>
+    request({ url: '/member/order', method: 'get', params })
+
