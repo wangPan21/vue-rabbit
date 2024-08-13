@@ -2,7 +2,7 @@
     <div class="order-container">
         <el-tabs @tab-change="handleClick">
             <!-- tab切换 -->
-            <el-tab-pane v-for="item in tabTypes" :key="item.name" :label="item.label"/>
+            <el-tab-pane v-for="item in tabTypes" :key="item.name" :label="item.label" />
 
             <div class="main-container">
                 <div class="holder-container" v-if="orderList.length === 0">
@@ -17,7 +17,7 @@
                             <!-- 未付款，倒计时时间还有 -->
                             <span class="down-time" v-if="order.orderState === 1">
                                 <i class="iconfont icon-down-time"></i>
-                                <b>付款截止: {{ order.countdown }}</b>
+                                <b>付款截止: {{ order.countdown === -1?'已经超时':`${order.countdown}` }}</b>
                             </span>
                         </div>
                         <div class="body">
@@ -41,7 +41,7 @@
                                 </ul>
                             </div>
                             <div class="column state">
-                                <p>{{ order.orderState }}</p>
+                                <p>{{ fomartPayState(order.orderState) }} </p>
                                 <p v-if="order.orderState === 3">
                                     <a href="javascript:;" class="green">查看物流</a>
                                 </p>
@@ -77,7 +77,8 @@
                     </div>
                     <!-- 分页 -->
                     <div class="pagination-container">
-                        <el-pagination background layout="prev, pager, next" />
+                        <el-pagination background layout="prev, pager, next" :page-size="params.pageSize" :total="total" 
+                         @current-change="getOrder"/>
                     </div>
                 </div>
             </div>
@@ -103,6 +104,8 @@ const tabTypes = [
 // 订单列表
 const orderList = ref([])
 
+const total = ref(0) //总数
+
 const params = ref({
     orderState: 0,
     page: 1,
@@ -114,19 +117,35 @@ onMounted(() => {
 })
 
 //我的订单接口
-const getOrder = async () => {
+const getOrder = async (page) => {
+    params.value.page = page
     const res = await getUserOrder(params.value)
     if (res.code == '1') {
         orderList.value = res.result
+        total.value = res.result.counts
     }
 }
 
 const handleClick = (type) => {
     //切换订单状态
     params.value.orderState = type
+    params.value.page = 1
     //获取新的订单数据
     getOrder()
 }
+
+  // 创建格式化函数
+  const fomartPayState = (payState) => {
+    const stateMap = {
+      1: '待付款',
+      2: '待发货',
+      3: '待收货',
+      4: '待评价',
+      5: '已完成',
+      6: '已取消'
+    }
+    return stateMap[payState]
+  }
 
 </script>
 
